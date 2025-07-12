@@ -188,30 +188,32 @@ async function checkout() {
     }
 }
 
-// Send data to Google Sheets (CORRECTED VERSION)
+// Send data to Google Sheets (Working version with no-cors)
 async function sendToGoogleSheets(orderData) {
     if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
         console.log('Google Sheets URL not configured. Order data:', orderData);
-        return; // Skip if URL not configured
+        return;
     }
     
     try {
         console.log('Sending order data to Google Sheets:', orderData);
         
+        // Using no-cors mode for Google Apps Script (this is the standard approach)
         const response = await fetch(GOOGLE_SHEETS_URL, {
             method: 'POST',
+            mode: 'no-cors', // This is required for Google Apps Script
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(orderData)
         });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
+        // With no-cors mode, we can't read the response, but the request will be sent
+        // Google Apps Script will process it in the background
+        console.log('Order sent to Google Sheets (no-cors mode)');
         
-        const result = await response.json();
-        console.log('Data sent to Google Sheets successfully:', result);
+        // Wait a moment to ensure the request is processed
+        await new Promise(resolve => setTimeout(resolve, 1000));
         
     } catch (error) {
         console.error('Error sending to Google Sheets:', error);
