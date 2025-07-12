@@ -205,7 +205,6 @@ async function sendToGoogleSheets(orderData) {
             mode: "no-cors",
             headers: {
               "Content-Type": "application/json",
-              "Content-Length": body.length,
               "Host": "script.google.com",
             },
             body: JSON.stringify(orderData),
