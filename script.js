@@ -4,10 +4,7 @@ let currentTip = 0;
 let tipPercentage = 0;
 
 // Google Sheets configuration
-const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbgIkheLppcsrmRzs62z4A472YXHZOg-K2cl7Z1lk3HlcpOV8eRv6QwPCHuSNZCnUeOA/exec'; // Replace with your Google Apps Script URL
-//deployment_id: AKfycbwbgIkheLppcsrmRzs62z4A472YXHZOg-K2cl7Z1lk3HlcpOV8eRv6QwPCHuSNZCnUeOA
-//https://script.google.com/macros/s/AKfycbwbgIkheLppcsrmRzs62z4A472YXHZOg-K2cl7Z1lk3HlcpOV8eRv6QwPCHuSNZCnUeOA/exec
-// const GOOGLE_SHEETS_URL = 'Users/Lynn.Sohn/z_ruby_tut/pos/google-apps-script.js'; 
+const GOOGLE_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwbgIkheLppcsrmRzs62z4A472YXHZOg-K2cl7Z1lk3HlcpOV8eRv6QwPCHuSNZCnUeOA/exec';
 
 // Initialize the application
 document.addEventListener('DOMContentLoaded', function() {
@@ -191,7 +188,7 @@ async function checkout() {
     }
 }
 
-// Send data to Google Sheets
+// Send data to Google Sheets (CORRECTED VERSION)
 async function sendToGoogleSheets(orderData) {
     if (!GOOGLE_SHEETS_URL || GOOGLE_SHEETS_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE') {
         console.log('Google Sheets URL not configured. Order data:', orderData);
@@ -199,21 +196,18 @@ async function sendToGoogleSheets(orderData) {
     }
     
     try {
-        let b = JSON.stringify(orderData)
+        console.log('Sending order data to Google Sheets:', orderData);
+        
         const response = await fetch(GOOGLE_SHEETS_URL, {
-            redirect: "follow",
             method: 'POST',
-            mode: "no-cors",
             headers: {
-              "Content-Type": "application/json",
-              "Content-Length": b.length,
-              "Host": "script.google.com",
+                'Content-Type': 'application/json',
             },
-            body: b,
+            body: JSON.stringify(orderData)
         });
         
         if (!response.ok) {
-            throw new Error('Failed to send data to Google Sheets');
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
         
         const result = await response.json();
