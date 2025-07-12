@@ -200,14 +200,12 @@ async function sendToGoogleSheets(orderData) {
     
     try {
         const response = await fetch(GOOGLE_SHEETS_URL, {
+            redirect: "follow",
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(orderData),
-            headers: {
-                "Content-Type": "text/plain;charset=utf-8",
-            }
         });
         
         if (!response.ok) {
