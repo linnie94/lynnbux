@@ -204,7 +204,10 @@ async function sendToGoogleSheets(orderData) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(orderData),
+            headers: {
+                "Content-Type": "text/plain;charset=utf-8",
+            }
         });
         
         if (!response.ok) {
